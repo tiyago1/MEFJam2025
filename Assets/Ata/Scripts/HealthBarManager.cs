@@ -66,6 +66,7 @@ public class HealthBarManager : MonoBehaviour
 
     public void DecreaseHealth(float amount)
     {
+        float oldHealth = currentHealth;
         currentHealth -= amount;
 
         // Canýn 0'ýn altýna düþmesini önle
@@ -75,6 +76,17 @@ public class HealthBarManager : MonoBehaviour
         }
 
         UpdateHealthUI();
+
+        // Eðer hasar alýndýysa, mesafe takipçisini bilgilendir
+        if (currentHealth < oldHealth)
+        {
+            // Mesafe takipçisini bul ve bildir
+            DistanceTracker distanceTracker = FindObjectOfType<DistanceTracker>();
+            if (distanceTracker != null)
+            {
+                distanceTracker.NotifyDamageTaken();
+            }
+        }
 
         // Can sýfýr olduðunda sahneyi yeniden yükle
         if (currentHealth <= 0)
