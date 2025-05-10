@@ -27,7 +27,7 @@ public class UIController : MonoBehaviour
         gameplayHUD.SetActive(false);
 
         // Zaman ölçeðini normal olarak ayarla
-        Time.timeScale = 1f;
+        Time.timeScale = 0f;
     }
 
     private void Start()

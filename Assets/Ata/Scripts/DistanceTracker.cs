@@ -10,6 +10,10 @@ public class DistanceTracker : MonoBehaviour
     [SerializeField] private float maxSpeedMetersPerMinute = 300f; // %100 can varken dakikada katedilen mesafe
     [SerializeField] private float minSpeedMetersPerMinute = 50f;  // %10 can varken dakikada katedilen mesafe
 
+    [Header("Speed Monitoring (Read Only)")]
+    [SerializeField][ReadOnly] private float currentSpeedMetersPerMinute; // Editörde görüntülemek için
+    [SerializeField][ReadOnly] private float currentSpeedMetersPerSecond; // Editörde görüntülemek için
+
     [Header("UI Elements")]
     [SerializeField] private Slider distanceSlider;
     [SerializeField] private TextMeshProUGUI distanceText;
@@ -63,21 +67,6 @@ public class DistanceTracker : MonoBehaviour
     private void Update()
     {
         if (healthManager == null) return;
-
-        // Health kontrolü - hasar alýndý mý?
-        float currentHealth = healthManager.GetCurrentHealth();
-
-        // Hasar alýndý mý kontrol et (health deðeri azaldýysa)
-        if (currentHealth < lastHealth)
-        {
-            // Hasar alýndý, yavaþlama baþlat
-            isSlowed = true;
-            slowTimer = slowDuration;
-            Debug.Log("Hasar alýndý! 2 saniye boyunca ilerleme hýzý yarýya düþtü.");
-        }
-
-        // Son health deðerini güncelle
-        lastHealth = currentHealth;
 
         // Yavaþlama süresi kontrolü
         if (isSlowed)
