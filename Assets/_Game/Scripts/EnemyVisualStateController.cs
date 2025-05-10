@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Zenject;
@@ -22,6 +23,17 @@ namespace _Game.Scripts
         public bool IsLeft;
         public bool IsFront;
         public bool IsPunked;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            float value = 6;
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(view.transform.DOLocalRotate(new Vector3(0, 0, -value), .3f));
+            sequence.Append(view.transform.DOLocalRotate(new Vector3(0, 0, value), .3f));
+            sequence.Append(view.transform.DOLocalRotate(new Vector3(0, 0, -value), .3f));
+            sequence.SetLoops(-1, LoopType.Yoyo);
+        }
 
         [Button]
         public void SetVisualState(EnemyVisualType state)

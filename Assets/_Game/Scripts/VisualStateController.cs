@@ -8,12 +8,12 @@ namespace _Game.Scripts
     public class VisualStateController : MonoBehaviour
     {
         [SerializeField] private List<Sprite> sprites;
-        [SerializeField] protected SpriteRenderer view;
+        [SerializeField] public SpriteRenderer view;
         [SerializeField] private int initialState;
         
         [ReadOnly] private int activeState;
 
-        private void Awake()
+        protected virtual void Awake()
         {
             SetVisualState(initialState);
         }

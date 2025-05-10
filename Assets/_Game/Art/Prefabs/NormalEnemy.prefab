@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4975849112227745672}
   - component: {fileID: 6070887589155072367}
   - component: {fileID: 5855050646084690370}
+  - component: {fileID: 4049096571401110351}
   m_Layer: 0
   m_Name: NormalEnemy
   m_TagString: Untagged
@@ -161,6 +162,27 @@ MonoBehaviour:
   IsLeft: 0
   IsFront: 0
   IsPunked: 0
+--- !u!135 &4049096571401110351
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2361349538003196416}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.95
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5101161283465533055
 GameObject:
   m_ObjectHideFlags: 0

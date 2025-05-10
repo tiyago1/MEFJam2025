@@ -1,32 +1,39 @@
+using System;
+using _Game.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Zenject;
 
 public class HealthBarManager : MonoBehaviour
 {
-    [Header("Health Settings")]
-    [SerializeField] private float maxHealth = 100f;
+    [Header("Health Settings")] [SerializeField]
+    private float maxHealth = 100f;
+
     [SerializeField] private float currentHealth;
-    [SerializeField] private float healthDecreaseRate = 2f; // Her saniye düþecek can miktarý
-    [SerializeField] private float damageAmount = 10f; // T tuþuna basýnca alýnan hasar miktarý
-    [SerializeField] private float healAmount = 10f; // Y tuþuna basýnca kazanýlan can miktarý
+    [SerializeField] private float healthDecreaseRate = 2f; // Her saniye dï¿½ï¿½ecek can miktarï¿½
+    [SerializeField] private float damageAmount = 10f; // T tuï¿½una basï¿½nca alï¿½nan hasar miktarï¿½
+    [SerializeField] private float healAmount = 10f; // Y tuï¿½una basï¿½nca kazanï¿½lan can miktarï¿½
 
-    [Header("UI Elements")]
-    [SerializeField] private Slider healthBar;
-    [SerializeField] private Image fillImage; // Can barýnýn doluluk göstergesi
-    [SerializeField] private TextMeshProUGUI healthText; // Can deðerini gösteren metin
+    [Header("UI Elements")] [SerializeField]
+    private Slider healthBar;
 
-    [Header("Color Settings")]
-    [SerializeField] private Color fullHealthColor = Color.green;
+    [SerializeField] private Image fillImage; // Can barï¿½nï¿½n doluluk gï¿½stergesi
+    [SerializeField] private TextMeshProUGUI healthText; // Can deï¿½erini gï¿½steren metin
+
+    [Header("Color Settings")] [SerializeField]
+    private Color fullHealthColor = Color.green;
+
     [SerializeField] private Color lowHealthColor = Color.red;
-    [SerializeField] private float lowHealthThreshold = 30f; // Düþük can eþiði
+    [SerializeField] private float lowHealthThreshold = 30f; // Dï¿½ï¿½ï¿½k can eï¿½iï¿½i
 
     private float timeSinceLastDecrease = 0f;
+    [Inject] private SignalBus signalBus;
 
     private void Awake()
     {
-        // Baþlangýçta can deðerlerini ayarla
+        // Baï¿½langï¿½ï¿½ta can deï¿½erlerini ayarla
         currentHealth = 50f;
 
         // UI elementlerini ayarla
@@ -39,47 +46,62 @@ public class HealthBarManager : MonoBehaviour
         UpdateHealthUI();
     }
 
+    private void Start()
+    {
+        signalBus.Subscribe<GameSignals.OnPlayerDamageTaken>(() => DecreaseHealth(damageAmount));
+    }
+
     private void Update()
     {
-        // Can barýnýn her saniye azalmasý
+        // Can barï¿½nï¿½n her saniye azalmasï¿½
         timeSinceLastDecrease += Time.deltaTime;
         if (timeSinceLastDecrease >= 1f)
         {
-            // Otomatik can azalmasý için NotifyDamageTaken() ÇAÐRILMAZ
-            // Bu yüzden ayrý bir fonksiyon kullanýyoruz
+            // Otomatik can azalmasï¿½ iï¿½in NotifyDamageTaken() ï¿½Aï¿½RILMAZ
+            // Bu yï¿½zden ayrï¿½ bir fonksiyon kullanï¿½yoruz
             DecreaseHealthSilently(healthDecreaseRate);
             timeSinceLastDecrease = 0f;
         }
 
-        // T tuþuna basýlýnca hasar al
+        // T tuï¿½una basï¿½lï¿½nca hasar al
         if (Input.GetKeyDown(KeyCode.T))
         {
-            DecreaseHealth(damageAmount);
-            Debug.Log("T tuþuna basýldý: " + damageAmount + " hasar alýndý!");
-
-            // T tuþuna basýldýðýnda doðrudan DistanceTracker'ý bilgilendir
-            DistanceTracker distanceTracker = FindObjectOfType<DistanceTracker>();
-            if (distanceTracker != null)
-            {
-                distanceTracker.NotifyDamageTaken();
-                Debug.Log("T tuþuna basýldý: Ýlerleme hýzý 2 saniye boyunca yarýya düþürüldü!");
-            }
+            Decrease();
         }
 
-        // Y tuþuna basýlýnca can kazanma
+        // Y tuï¿½una basï¿½lï¿½nca can kazanma
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            IncreaseHealth(healAmount);
-            Debug.Log("Y tuþuna basýldý: " + healAmount + " can kazanýldý!");
+            Increase();
         }
     }
 
-    // Normal hasar fonksiyonu (T tuþu için)
+    public void Increase()
+    {
+        IncreaseHealth(healAmount);
+        Debug.Log("Y tuï¿½una basï¿½ldï¿½: " + healAmount + " can kazanï¿½ldï¿½!");
+    }
+
+    public void Decrease()
+    {
+        DecreaseHealth(damageAmount);
+        Debug.Log("T tuï¿½una basï¿½ldï¿½: " + damageAmount + " hasar alï¿½ndï¿½!");
+
+        // T tuï¿½una basï¿½ldï¿½ï¿½ï¿½nda doï¿½rudan DistanceTracker'ï¿½ bilgilendir
+        DistanceTracker distanceTracker = FindObjectOfType<DistanceTracker>();
+        if (distanceTracker != null)
+        {
+            distanceTracker.NotifyDamageTaken();
+            Debug.Log("T tuï¿½una basï¿½ldï¿½: ï¿½lerleme hï¿½zï¿½ 2 saniye boyunca yarï¿½ya dï¿½ï¿½ï¿½rï¿½ldï¿½!");
+        }
+    }
+
+    // Normal hasar fonksiyonu (T tuï¿½u iï¿½in)
     public void DecreaseHealth(float amount)
     {
         currentHealth -= amount;
 
-        // Canýn 0'ýn altýna düþmesini önle
+        // Canï¿½n 0'ï¿½n altï¿½na dï¿½ï¿½mesini ï¿½nle
         if (currentHealth < 0)
         {
             currentHealth = 0;
@@ -87,20 +109,20 @@ public class HealthBarManager : MonoBehaviour
 
         UpdateHealthUI();
 
-        // Can sýfýr olduðunda sahneyi yeniden yükle
+        // Can sï¿½fï¿½r olduï¿½unda sahneyi yeniden yï¿½kle
         if (currentHealth <= 0)
         {
-            Debug.Log("Can sýfýrlandý! Sahne yeniden yükleniyor...");
-            Invoke("RestartScene", 1f); // 1 saniye bekleyip sahneyi yeniden yükle
+            Debug.Log("Can sï¿½fï¿½rlandï¿½! Sahne yeniden yï¿½kleniyor...");
+            Invoke("RestartScene", 1f); // 1 saniye bekleyip sahneyi yeniden yï¿½kle
         }
     }
 
-    // Sessiz hasar fonksiyonu (otomatik azalma için) - yavaþlama tetiklemez
+    // Sessiz hasar fonksiyonu (otomatik azalma iï¿½in) - yavaï¿½lama tetiklemez
     public void DecreaseHealthSilently(float amount)
     {
         currentHealth -= amount;
 
-        // Canýn 0'ýn altýna düþmesini önle
+        // Canï¿½n 0'ï¿½n altï¿½na dï¿½ï¿½mesini ï¿½nle
         if (currentHealth < 0)
         {
             currentHealth = 0;
@@ -108,11 +130,11 @@ public class HealthBarManager : MonoBehaviour
 
         UpdateHealthUI();
 
-        // Can sýfýr olduðunda sahneyi yeniden yükle
+        // Can sï¿½fï¿½r olduï¿½unda sahneyi yeniden yï¿½kle
         if (currentHealth <= 0)
         {
-            Debug.Log("Can sýfýrlandý! Sahne yeniden yükleniyor...");
-            Invoke("RestartScene", 1f); // 1 saniye bekleyip sahneyi yeniden yükle
+            Debug.Log("Can sï¿½fï¿½rlandï¿½! Sahne yeniden yï¿½kleniyor...");
+            Invoke("RestartScene", 1f); // 1 saniye bekleyip sahneyi yeniden yï¿½kle
         }
     }
 
@@ -120,7 +142,7 @@ public class HealthBarManager : MonoBehaviour
     {
         currentHealth += amount;
 
-        // Canýn maksimum deðeri aþmasýný önle
+        // Canï¿½n maksimum deï¿½eri aï¿½masï¿½nï¿½ ï¿½nle
         if (currentHealth > maxHealth)
         {
             currentHealth = maxHealth;
@@ -131,22 +153,22 @@ public class HealthBarManager : MonoBehaviour
 
     private void UpdateHealthUI()
     {
-        // Slider'ý güncelle
+        // Slider'ï¿½ gï¿½ncelle
         if (healthBar != null)
         {
             healthBar.value = currentHealth;
         }
 
-        // Metin alanýný güncelle
+        // Metin alanï¿½nï¿½ gï¿½ncelle
         if (healthText != null)
         {
             healthText.text = Mathf.Ceil(currentHealth).ToString() + " / " + maxHealth.ToString();
         }
 
-        // Can barýnýn rengini güncelle
+        // Can barï¿½nï¿½n rengini gï¿½ncelle
         if (fillImage != null)
         {
-            // Can miktarýna göre rengi deðiþtir (yeþilden kýrmýzýya)
+            // Can miktarï¿½na gï¿½re rengi deï¿½iï¿½tir (yeï¿½ilden kï¿½rmï¿½zï¿½ya)
             if (currentHealth <= lowHealthThreshold)
             {
                 fillImage.color = lowHealthColor;
@@ -165,19 +187,19 @@ public class HealthBarManager : MonoBehaviour
         SceneManager.LoadScene(currentSceneIndex);
     }
 
-    // Diðer scriptlerin can miktarýný alabilmesi için
+    // Diï¿½er scriptlerin can miktarï¿½nï¿½ alabilmesi iï¿½in
     public float GetCurrentHealth()
     {
         return currentHealth;
     }
 
-    // Diðer scriptlerin maksimum caný alabilmesi için
+    // Diï¿½er scriptlerin maksimum canï¿½ alabilmesi iï¿½in
     public float GetMaxHealth()
     {
         return maxHealth;
     }
 
-    // Diðer scriptlerin can miktarýný ayarlayabilmesi için
+    // Diï¿½er scriptlerin can miktarï¿½nï¿½ ayarlayabilmesi iï¿½in
     public void SetHealth(float health)
     {
         currentHealth = Mathf.Clamp(health, 0f, maxHealth);
