@@ -9,7 +9,7 @@ namespace _Game.Scripts
         Front,
         Back,
     }
-    
+
     public class PlayerVisualStateController : VisualStateController
     {
         [SerializeField, ReadOnly] private PlayerVisualStateType activeStateType;
@@ -34,7 +34,7 @@ namespace _Game.Scripts
         public void SetLookXDirection(bool isLeft)
         {
             IsLeft = isLeft;
-            view.flipX = IsLeft;
+            view.flipX = !IsFront ? IsLeft : !IsLeft;
         }
 
         public void SetLookYDirection(bool isFront)
