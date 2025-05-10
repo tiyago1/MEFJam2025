@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 2987319356869671572}
   - component: {fileID: 8856123388268120008}
   - component: {fileID: 4975849112227745672}
-  - component: {fileID: 5217522693718437947}
   - component: {fileID: 6070887589155072367}
+  - component: {fileID: 5855050646084690370}
   m_Layer: 0
   m_Name: NormalEnemy
   m_TagString: Untagged
@@ -121,25 +121,6 @@ MonoBehaviour:
   updateRate: 0.5
   speed: 4
   nextWaypointDistance: 0.5
---- !u!114 &5217522693718437947
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2361349538003196416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f669f656624444da0b1a2e32cb5530f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprites:
-  - {fileID: 869347492, guid: 399e0cea29ae5c342afe249ee0e7a010, type: 3}
-  - {fileID: -1820364338, guid: 399e0cea29ae5c342afe249ee0e7a010, type: 3}
-  - {fileID: 327084492, guid: 399e0cea29ae5c342afe249ee0e7a010, type: 3}
-  - {fileID: -1659826886, guid: 399e0cea29ae5c342afe249ee0e7a010, type: 3}
-  view: {fileID: 437459646325839400}
-  initialState: 0
 --- !u!114 &6070887589155072367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +136,28 @@ MonoBehaviour:
   type: 0
   lookAt: {fileID: 1493165384050258956}
   chaser: {fileID: 4975849112227745672}
+--- !u!114 &5855050646084690370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2361349538003196416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5038e67a26aa403aabdc63b33d0a781b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprites:
+  - {fileID: 869347492, guid: 399e0cea29ae5c342afe249ee0e7a010, type: 3}
+  - {fileID: -1820364338, guid: 399e0cea29ae5c342afe249ee0e7a010, type: 3}
+  - {fileID: 327084492, guid: 399e0cea29ae5c342afe249ee0e7a010, type: 3}
+  - {fileID: -1659826886, guid: 399e0cea29ae5c342afe249ee0e7a010, type: 3}
+  view: {fileID: 437459646325839400}
+  initialState: 0
+  activeStateType: 0
+  IsLeft: 0
+  IsFront: 0
 --- !u!1 &5101161283465533055
 GameObject:
   m_ObjectHideFlags: 0
