@@ -23,7 +23,6 @@ namespace _Game.Scripts
             seeker = GetComponent<Seeker>();
             controller = GetComponent<CharacterController>();
 
-            InvokeRepeating(nameof(UpdatePath), 0f, updateRate);
         }
 
         void UpdatePath()
@@ -65,6 +64,12 @@ namespace _Game.Scripts
             {
                 currentWaypoint++;
             }
+        }
+
+        public void Chase(Transform target)
+        {
+            this.target = target;
+            InvokeRepeating(nameof(UpdatePath), 0f, updateRate);
         }
     }
 

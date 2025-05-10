@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 8856123388268120008}
   - component: {fileID: 4975849112227745672}
   - component: {fileID: 5217522693718437947}
+  - component: {fileID: 6070887589155072367}
   m_Layer: 0
-  m_Name: Square
+  m_Name: NormalEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,7 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   updateRate: 0.5
-  speed: 5
+  speed: 4
   nextWaypointDistance: 0.5
 --- !u!114 &5217522693718437947
 MonoBehaviour:
@@ -138,6 +139,22 @@ MonoBehaviour:
   - {fileID: 327084492, guid: 399e0cea29ae5c342afe249ee0e7a010, type: 3}
   - {fileID: -1659826886, guid: 399e0cea29ae5c342afe249ee0e7a010, type: 3}
   view: {fileID: 437459646325839400}
+  initialState: 0
+--- !u!114 &6070887589155072367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2361349538003196416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e466a85feb48e583008ccfa6134741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  lookAt: {fileID: 1493165384050258956}
+  chaser: {fileID: 4975849112227745672}
 --- !u!1 &5101161283465533055
 GameObject:
   m_ObjectHideFlags: 0
