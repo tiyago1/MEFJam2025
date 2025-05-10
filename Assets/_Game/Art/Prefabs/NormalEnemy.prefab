@@ -136,6 +136,8 @@ MonoBehaviour:
   type: 0
   lookAt: {fileID: 1493165384050258956}
   chaser: {fileID: 4975849112227745672}
+  view: {fileID: 5855050646084690370}
+  collider: {fileID: 8856123388268120008}
 --- !u!114 &5855050646084690370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,6 +160,7 @@ MonoBehaviour:
   activeStateType: 0
   IsLeft: 0
   IsFront: 0
+  IsPunked: 0
 --- !u!1 &5101161283465533055
 GameObject:
   m_ObjectHideFlags: 0

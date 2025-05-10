@@ -71,6 +71,10 @@ namespace _Game.Scripts
             this.target = target;
             InvokeRepeating(nameof(UpdatePath), 0f, updateRate);
         }
-    }
 
+        public void Stop()
+        {
+            this.target = null;
+        }
+    }
 }

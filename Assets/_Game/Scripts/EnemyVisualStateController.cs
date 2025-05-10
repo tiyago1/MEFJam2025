@@ -18,9 +18,11 @@ namespace _Game.Scripts
         [SerializeField, ReadOnly] private EnemyVisualType activeStateType;
 
         [Inject] private PlayerMovementController playerMovementController;
+
         public bool IsLeft;
         public bool IsFront;
-        
+        public bool IsPunked;
+
         [Button]
         public void SetVisualState(EnemyVisualType state)
         {
@@ -34,7 +36,7 @@ namespace _Game.Scripts
             SetLookXDirection(position.x < .5f);
             SetLookYDirection(position.z > .5f);
         }
-        
+
         public void SetLookXDirection(bool isLeft)
         {
             IsLeft = isLeft;
@@ -44,7 +46,19 @@ namespace _Game.Scripts
         public void SetLookYDirection(bool isFront)
         {
             IsFront = isFront;
-            SetVisualState(IsFront ? EnemyVisualType.NormalFront : EnemyVisualType.NormalBack);
+            RefreshVisualState();
+        }
+
+        public void RefreshVisualState()
+        {
+            if (IsPunked)
+            {
+                SetVisualState(IsFront ? EnemyVisualType.PunkFront : EnemyVisualType.PunkBack);
+            }
+            else
+            {
+                SetVisualState(IsFront ? EnemyVisualType.NormalFront : EnemyVisualType.NormalBack);
+            }
         }
     }
 }
