@@ -1,5 +1,7 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
+using Zenject;
 
 namespace _Game.Scripts
 {
@@ -7,6 +9,9 @@ namespace _Game.Scripts
     {
         [SerializeField] private Rigidbody rigidbody;
         [SerializeField] private float bulletForce;
+        
+        [Inject] private SignalBus signalBus;
+
 
         private void OnCollisionEnter(Collision other)
         {
@@ -15,6 +20,7 @@ namespace _Game.Scripts
             if (enemy is not null)  
             {
                 enemy.TakeDamage(1, this.gameObject);
+                signalBus.Fire<GameSignals.OnPlayerDamageTaken>();
             }
             else
             {

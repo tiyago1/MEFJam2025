@@ -11247,8 +11247,8 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   healthDecreaseRate: 2
-  damageAmount: 10
-  healAmount: 10
+  damageAmount: 20
+  healAmount: 15
   healthBar: {fileID: 1337034339}
   fillImage: {fileID: 1126851167}
   healthText: {fileID: 0}

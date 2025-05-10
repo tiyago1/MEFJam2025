@@ -8,5 +8,6 @@ public class GameInstaller : MonoInstaller
         SignalBusInstaller.Install(Container);
 
         Container.DeclareSignal<GameSignals.OnPlayerDamageTaken>().OptionalSubscriber();
+        Container.DeclareSignal<GameSignals.OnPlayerEarnPoint>().OptionalSubscriber();
     }
 }

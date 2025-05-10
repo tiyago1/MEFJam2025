@@ -49,6 +49,7 @@ public class HealthBarManager : MonoBehaviour
     private void Start()
     {
         signalBus.Subscribe<GameSignals.OnPlayerDamageTaken>(() => DecreaseHealth(damageAmount));
+        signalBus.Subscribe<GameSignals.OnPlayerDamageTaken>(() =>   IncreaseHealth(healAmount));
     }
 
     private void Update()
@@ -72,16 +73,10 @@ public class HealthBarManager : MonoBehaviour
         // Y tu�una bas�l�nca can kazanma
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            Increase();
         }
     }
 
-    public void Increase()
-    {
-        IncreaseHealth(healAmount);
-        Debug.Log("Y tu�una bas�ld�: " + healAmount + " can kazan�ld�!");
-    }
-
+ 
     public void Decrease()
     {
         DecreaseHealth(damageAmount);

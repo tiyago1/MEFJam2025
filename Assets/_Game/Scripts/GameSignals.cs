@@ -6,5 +6,10 @@ namespace _Game.Scripts
         {
             
         }
+
+        public struct OnPlayerEarnPoint
+        {
+            
+        }
     }
 }
