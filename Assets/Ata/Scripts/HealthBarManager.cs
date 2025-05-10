@@ -27,7 +27,7 @@ public class HealthBarManager : MonoBehaviour
     private void Awake()
     {
         // Baþlangýçta can deðerlerini ayarla
-        currentHealth = maxHealth;
+        currentHealth = 50f;
 
         // UI elementlerini ayarla
         if (healthBar != null)
@@ -45,7 +45,9 @@ public class HealthBarManager : MonoBehaviour
         timeSinceLastDecrease += Time.deltaTime;
         if (timeSinceLastDecrease >= 1f)
         {
-            DecreaseHealth(healthDecreaseRate);
+            // Otomatik can azalmasý için NotifyDamageTaken() ÇAÐRILMAZ
+            // Bu yüzden ayrý bir fonksiyon kullanýyoruz
+            DecreaseHealthSilently(healthDecreaseRate);
             timeSinceLastDecrease = 0f;
         }
 
@@ -54,6 +56,14 @@ public class HealthBarManager : MonoBehaviour
         {
             DecreaseHealth(damageAmount);
             Debug.Log("T tuþuna basýldý: " + damageAmount + " hasar alýndý!");
+
+            // T tuþuna basýldýðýnda doðrudan DistanceTracker'ý bilgilendir
+            DistanceTracker distanceTracker = FindObjectOfType<DistanceTracker>();
+            if (distanceTracker != null)
+            {
+                distanceTracker.NotifyDamageTaken();
+                Debug.Log("T tuþuna basýldý: Ýlerleme hýzý 2 saniye boyunca yarýya düþürüldü!");
+            }
         }
 
         // Y tuþuna basýlýnca can kazanma
@@ -64,7 +74,29 @@ public class HealthBarManager : MonoBehaviour
         }
     }
 
+    // Normal hasar fonksiyonu (T tuþu için)
     public void DecreaseHealth(float amount)
+    {
+        currentHealth -= amount;
+
+        // Canýn 0'ýn altýna düþmesini önle
+        if (currentHealth < 0)
+        {
+            currentHealth = 0;
+        }
+
+        UpdateHealthUI();
+
+        // Can sýfýr olduðunda sahneyi yeniden yükle
+        if (currentHealth <= 0)
+        {
+            Debug.Log("Can sýfýrlandý! Sahne yeniden yükleniyor...");
+            Invoke("RestartScene", 1f); // 1 saniye bekleyip sahneyi yeniden yükle
+        }
+    }
+
+    // Sessiz hasar fonksiyonu (otomatik azalma için) - yavaþlama tetiklemez
+    public void DecreaseHealthSilently(float amount)
     {
         currentHealth -= amount;
 
