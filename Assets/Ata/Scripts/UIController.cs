@@ -1,5 +1,7 @@
+using _Game.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class UIController : MonoBehaviour
 {
@@ -15,19 +17,21 @@ public class UIController : MonoBehaviour
     [SerializeField] private Button backFromCreditsButton;
     [SerializeField] private Button backFromSettingsButton;
 
+    
+    [Inject] private SignalBus _signalBus;
+    
     private bool isPaused = false;
     private bool isGameStarted = false;
 
     private void Awake()
     {
-        // Baþlangýçta doðru panellerin aktif olmasýný saðla
+        // Baï¿½langï¿½ï¿½ta doï¿½ru panellerin aktif olmasï¿½nï¿½ saï¿½la
         mainMenuPanel.SetActive(true);
         creditsPanel.SetActive(false);
         settingsPanel.SetActive(false);
         gameplayHUD.SetActive(false);
 
-        // Zaman ölçeðini normal olarak ayarla
-        Time.timeScale = 0f;
+        // Zaman ï¿½lï¿½eï¿½ini normal olarak ayarla
     }
 
     private void Start()
@@ -41,7 +45,7 @@ public class UIController : MonoBehaviour
 
     private void Update()
     {
-        // Sadece oyun baþladýysa ESC tuþunu dinle
+        // Sadece oyun baï¿½ladï¿½ysa ESC tuï¿½unu dinle
         if (isGameStarted && Input.GetKeyDown(KeyCode.Escape))
         {
             TogglePause();
@@ -50,30 +54,31 @@ public class UIController : MonoBehaviour
 
     public void PlayGame()
     {
-        // Ana menüyü kapat ve oyun HUD'ýný aç
+        // Ana menï¿½yï¿½ kapat ve oyun HUD'ï¿½nï¿½ aï¿½
         mainMenuPanel.SetActive(false);
         gameplayHUD.SetActive(true);
         isGameStarted = true;
         isPaused = false;
-        Time.timeScale = 1f;
 
-        // Burada oyunu baþlatan kodu çaðýrabilirsiniz
-        // Örneðin: GameManager.Instance.StartGame();
-        Debug.Log("Oyun baþlatýldý!");
+        // Burada oyunu baï¿½latan kodu ï¿½aï¿½ï¿½rabilirsiniz
+        // ï¿½rneï¿½in: GameManager.Instance.StartGame();
+        Debug.Log("Oyun baï¿½latï¿½ldï¿½!");
+        
+        _signalBus.Fire<GameSignals.OnPlayButtonPressed>();
     }
 
     public void OpenCredits()
     {
         mainMenuPanel.SetActive(false);
         creditsPanel.SetActive(true);
-        Debug.Log("Krediler açýldý!");
+        Debug.Log("Krediler aï¿½ï¿½ldï¿½!");
     }
 
     public void CloseCredits()
     {
         creditsPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
-        Debug.Log("Ana menüye dönüldü!");
+        Debug.Log("Ana menï¿½ye dï¿½nï¿½ldï¿½!");
     }
 
     public void TogglePause()
@@ -82,16 +87,14 @@ public class UIController : MonoBehaviour
 
         if (isPaused)
         {
-            // Oyunu duraklat ve ayarlar menüsünü aç
-            Time.timeScale = 0f;
+            // Oyunu duraklat ve ayarlar menï¿½sï¿½nï¿½ aï¿½
             settingsPanel.SetActive(true);
             gameplayHUD.SetActive(false);
-            Debug.Log("Oyun duraklatýldý, ayarlar açýldý!");
+            Debug.Log("Oyun duraklatï¿½ldï¿½, ayarlar aï¿½ï¿½ldï¿½!");
         }
         else
         {
-            // Oyunu devam ettir ve ayarlar menüsünü kapat
-            Time.timeScale = 1f;
+            // Oyunu devam ettir ve ayarlar menï¿½sï¿½nï¿½ kapat
             settingsPanel.SetActive(false);
             Debug.Log("Oyun devam ediyor!");
             gameplayHUD.SetActive(true);
@@ -100,29 +103,27 @@ public class UIController : MonoBehaviour
 
     public void CloseSettings()
     {
-        // Ayarlar menüsünden çýkýldýðýnda ana menüye dön
+        // Ayarlar menï¿½sï¿½nden ï¿½ï¿½kï¿½ldï¿½ï¿½ï¿½nda ana menï¿½ye dï¿½n
         settingsPanel.SetActive(false);
 
         if (isGameStarted)
         {
-            // Oyun devam ediyor ve duraklatýlmýþsa, duraklatma durumunu kaldýr
+            // Oyun devam ediyor ve duraklatï¿½lmï¿½ï¿½sa, duraklatma durumunu kaldï¿½r
             isPaused = false;
-            Time.timeScale = 1f;
-            Debug.Log("Ayarlar kapatýldý, oyun devam ediyor!");
+            Debug.Log("Ayarlar kapatï¿½ldï¿½, oyun devam ediyor!");
             gameplayHUD.SetActive(true);
         }
         else
         {
-            // Henüz oyun baþlamadýysa ana menüye dön
+            // Henï¿½z oyun baï¿½lamadï¿½ysa ana menï¿½ye dï¿½n
             mainMenuPanel.SetActive(true);
-            Debug.Log("Ayarlar kapatýldý, ana menüye dönüldü!");
+            Debug.Log("Ayarlar kapatï¿½ldï¿½, ana menï¿½ye dï¿½nï¿½ldï¿½!");
         }
     }
 
     public void ReturnToMainMenu()
     {
-        // Oyunu durdur ve ana menüye dön
-        Time.timeScale = 1f;
+        // Oyunu durdur ve ana menï¿½ye dï¿½n
         isPaused = false;
         isGameStarted = false;
 
@@ -131,8 +132,8 @@ public class UIController : MonoBehaviour
         creditsPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
 
-        // Burada oyunu sýfýrlayan kodu çaðýrabilirsiniz
-        // Örneðin: GameManager.Instance.ResetGame();
-        Debug.Log("Ana menüye dönüldü!");
+        // Burada oyunu sï¿½fï¿½rlayan kodu ï¿½aï¿½ï¿½rabilirsiniz
+        // ï¿½rneï¿½in: GameManager.Instance.ResetGame();
+        Debug.Log("Ana menï¿½ye dï¿½nï¿½ldï¿½!");
     }
 }

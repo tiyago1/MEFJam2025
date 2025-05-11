@@ -33,7 +33,7 @@ namespace _Game.Scripts
 
         private CancellationTokenSource cancellationTokenSource;
 
-        private void Awake()
+        public void Initialize()
         {
             cancellationTokenSource = new CancellationTokenSource();
             StartSpawning().Forget();
@@ -114,7 +114,6 @@ namespace _Game.Scripts
             enemy.transform.position = spawnPoint.transform.position;
             this.transform.gameObject.SetActive(true);
             enemy.Initialize();
-
         }
 
         public void Dispose()

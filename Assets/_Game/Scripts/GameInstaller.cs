@@ -14,6 +14,7 @@ public class GameInstaller : MonoInstaller
 
         Container.DeclareSignal<GameSignals.OnPlayerDamageTaken>().OptionalSubscriber();
         Container.DeclareSignal<GameSignals.OnPlayerEarnPoint>().OptionalSubscriber();
+        Container.DeclareSignal<GameSignals.OnPlayButtonPressed>().OptionalSubscriber();
         
         Container.BindMemoryPool<NormalEnemy, NormalEnemy.Pool>()
             .WithInitialSize(10)

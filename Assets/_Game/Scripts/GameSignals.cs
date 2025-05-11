@@ -11,5 +11,10 @@ namespace _Game.Scripts
         {
             
         }
+        
+        public struct OnPlayButtonPressed
+        {
+            
+        }
     }
 }
