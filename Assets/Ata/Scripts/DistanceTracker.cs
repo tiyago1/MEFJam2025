@@ -4,33 +4,36 @@ using TMPro;
 
 public class DistanceTracker : MonoBehaviour
 {
-    [Header("Distance Settings")]
-    [SerializeField] private float currentDistance = 0f;
+    [Header("Distance Settings")] [SerializeField]
+    private float currentDistance = 0f;
+
     [SerializeField] private float maxDistance = 1000f;
     [SerializeField] private float maxSpeedMetersPerMinute = 300f; // %100 can varken dakikada katedilen mesafe
-    [SerializeField] private float minSpeedMetersPerMinute = 50f;  // %10 can varken dakikada katedilen mesafe
+    [SerializeField] private float minSpeedMetersPerMinute = 50f; // %10 can varken dakikada katedilen mesafe
 
-    [Header("Speed Monitoring (Read Only)")]
-    [SerializeField][ReadOnly] private float currentSpeedMetersPerMinute; // Editörde görüntülemek için
-    [SerializeField][ReadOnly] private float currentSpeedMetersPerSecond; // Editörde görüntülemek için
+    [Header("Speed Monitoring (Read Only)")] [SerializeField] [ReadOnly]
+    private float currentSpeedMetersPerMinute; // Editï¿½rde gï¿½rï¿½ntï¿½lemek iï¿½in
 
-    [Header("UI Elements")]
-    [SerializeField] private Slider distanceSlider;
+    [SerializeField] [ReadOnly] private float currentSpeedMetersPerSecond; // Editï¿½rde gï¿½rï¿½ntï¿½lemek iï¿½in
+
+    [Header("UI Elements")] [SerializeField]
+    private Slider distanceSlider;
+
     [SerializeField] private TextMeshProUGUI distanceText;
 
-    [Header("References")]
-    [SerializeField] private HealthBarManager healthManager;
+    [Header("References")] [SerializeField]
+    private HealthBarManager healthManager;
 
-    [Header("Environment Movement")]
-    [SerializeField] private Transform objectToMoveUp;
+    [Header("Environment Movement")] [SerializeField]
+    private Transform objectToMoveUp;
 
-    // Hasar alýnca yavaþlama kontrolü için deðiþkenler
+    // Hasar alï¿½nca yavaï¿½lama kontrolï¿½ iï¿½in deï¿½iï¿½kenler
     private bool isSlowed = false;
-    private float slowDuration = 2f; // Yavaþlama süresi (saniye)
+    private float slowDuration = 2f; // Yavaï¿½lama sï¿½resi (saniye)
     private float slowTimer = 0f;
-    private float slowMultiplier = 0.5f; // Yavaþlama çarpaný (yarýya düþürüyor)
+    private float slowMultiplier = 0.5f; // Yavaï¿½lama ï¿½arpanï¿½ (yarï¿½ya dï¿½ï¿½ï¿½rï¿½yor)
 
-    // Son health deðeri (hasar alýnýp alýnmadýðýný kontrol etmek için)
+    // Son health deï¿½eri (hasar alï¿½nï¿½p alï¿½nmadï¿½ï¿½ï¿½nï¿½ kontrol etmek iï¿½in)
     private float lastHealth;
 
     private void Start()
@@ -51,7 +54,7 @@ public class DistanceTracker : MonoBehaviour
             healthManager = FindObjectOfType<HealthBarManager>();
             if (healthManager == null)
             {
-                Debug.LogError("DistanceTracker: HealthBarManager bulunamadý!");
+                Debug.LogError("DistanceTracker: HealthBarManager bulunamadï¿½!");
             }
         }
 
@@ -71,7 +74,7 @@ public class DistanceTracker : MonoBehaviour
             if (slowTimer <= 0)
             {
                 isSlowed = false;
-                Debug.Log("Normal hýza dönüldü.");
+                Debug.Log("Normal hï¿½za dï¿½nï¿½ldï¿½.");
             }
         }
 
@@ -99,7 +102,7 @@ public class DistanceTracker : MonoBehaviour
 
         if (currentDistance >= maxDistance)
         {
-            Debug.Log("Maksimum mesafeye ulaþýldý: 1000m!");
+            Debug.Log("Maksimum mesafeye ulaï¿½ï¿½ldï¿½: 1000m!");
         }
     }
 
