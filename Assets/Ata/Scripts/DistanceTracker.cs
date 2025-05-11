@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class DistanceTracker : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class DistanceTracker : MonoBehaviour
     [SerializeField] private float maxDistance = 1000f;
     [SerializeField] private float maxSpeedMetersPerMinute = 300f; // %100 can varken dakikada katedilen mesafe
     [SerializeField] private float minSpeedMetersPerMinute = 50f; // %10 can varken dakikada katedilen mesafe
-
+    public string endscene;
     [Header("Speed Monitoring (Read Only)")] [SerializeField] [ReadOnly]
     private float currentSpeedMetersPerMinute; // Edit�rde g�r�nt�lemek i�in
 
@@ -103,6 +104,9 @@ public class DistanceTracker : MonoBehaviour
         if (currentDistance >= maxDistance)
         {
             Debug.Log("Maksimum mesafeye ula��ld�: 1000m!");
+
+            int currentIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentIndex + 1);
         }
     }
 

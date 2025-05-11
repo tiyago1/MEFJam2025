@@ -32,6 +32,8 @@ public class UIController : MonoBehaviour
         gameplayHUD.SetActive(false);
 
         // Zaman �l�e�ini normal olarak ayarla
+        // Zaman ölçeğini normal olarak ayarla
+        Time.timeScale = 0f;
     }
 
     private void Start()
@@ -61,6 +63,7 @@ public class UIController : MonoBehaviour
         isPaused = false;
 
         // Burada oyunu ba�latan kodu �a��rabilirsiniz
+        Time.timeScale = 1f;
         // �rne�in: GameManager.Instance.StartGame();
         Debug.Log("Oyun ba�lat�ld�!");
         
