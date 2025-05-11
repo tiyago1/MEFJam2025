@@ -12,7 +12,8 @@ namespace _Game.Scripts
         NormalBack,
         NormalFront,
         PunkFront,
-        PunkBack
+        PunkBack,
+        Shocked
     }
 
     public class EnemyVisualStateController : VisualStateController
@@ -28,6 +29,7 @@ namespace _Game.Scripts
         public bool IsLeft;
         public bool IsFront;
         public bool IsPunked;
+        public bool IsShocked;
         private Sequence _moveSequence;
 
         public override void Initialize()
@@ -35,9 +37,8 @@ namespace _Game.Scripts
             base.Initialize();
             float value = 6;
 
-     
             PreDeffance().Forget();
- 
+
             _moveSequence = DOTween.Sequence();
             _moveSequence.Append(view.transform.DOLocalRotate(new Vector3(0, 0, -value), .3f));
             _moveSequence.Append(view.transform.DOLocalRotate(new Vector3(0, 0, value), .3f));
@@ -52,20 +53,14 @@ namespace _Game.Scripts
             await UniTask.Delay(TimeSpan.FromSeconds(.2));
             Sequence sequence = DOTween.Sequence();
             sequence.Append(view.DOFade(.5f, .2f));
-            sequence.Append(view.DOFade(1f, .2f)); 
-            sequence.SetLoops(2, LoopType.Yoyo).OnComplete(() =>
-            {
-                Debug.Log(this.gameObject.name);
-                characterController.excludeLayers = afterLayer;
-                collider.enabled = true;
-            });
+            sequence.Append(view.DOFade(1f, .2f));
+            sequence.SetLoops(2, LoopType.Yoyo);
+     
+            await sequence.AsyncWaitForCompletion();
+            await UniTask.Delay(TimeSpan.FromSeconds(.01f), cancellationToken: cancellationTokenSource.Token);
 
-            // await sequence.AsyncWaitForCompletion();
-            // await UniTask.Delay(TimeSpan.FromSeconds(.01f), cancellationToken: cancellationTokenSource.Token);
-            
-            // view.DOFade(1f, .1f);
-            // this.GetComponent<CharacterController>().excludeLayers = afterLayer;
-            // this.GetComponent<Collider>().enabled = true;
+            characterController.excludeLayers = afterLayer;
+            collider.enabled = true;
         }
 
         [Button]
@@ -99,6 +94,16 @@ namespace _Game.Scripts
             if (IsPunked)
             {
                 SetVisualState(IsFront ? EnemyVisualType.PunkFront : EnemyVisualType.PunkBack);
+                return;
+            }
+            else
+            {
+                SetVisualState(IsFront ? EnemyVisualType.NormalFront : EnemyVisualType.NormalBack);
+            }
+            
+            if (IsShocked)
+            {
+                SetVisualState(IsFront ? EnemyVisualType.Shocked : EnemyVisualType.NormalBack);
             }
             else
             {
@@ -106,10 +111,18 @@ namespace _Game.Scripts
             }
         }
 
+
         public override void Dispose()
         {
             base.Dispose();
             _moveSequence.Kill();
+            IsShocked = false;
+            IsPunked = false;
+        }
+
+        public void SetShocked()
+        {
+            IsShocked = true;
         }
     }
 }

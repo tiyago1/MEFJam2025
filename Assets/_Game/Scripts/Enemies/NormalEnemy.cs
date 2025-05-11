@@ -29,7 +29,7 @@ namespace _Game.Scripts.Enemies
             view.RefreshVisualState();
             chaser.Stop();
             collider.enabled = false;
-
+            signalBus.Fire<GameSignals.OnPlayerEarnPoint>();
             transform.DOMoveY(8, .4f).SetDelay(.4f);
         }
 

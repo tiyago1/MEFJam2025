@@ -49,7 +49,7 @@ public class HealthBarManager : MonoBehaviour
     private void Start()
     {
         signalBus.Subscribe<GameSignals.OnPlayerDamageTaken>(() => DecreaseHealth(damageAmount));
-        signalBus.Subscribe<GameSignals.OnPlayerDamageTaken>(() =>   IncreaseHealth(healAmount));
+        signalBus.Subscribe<GameSignals.OnPlayerEarnPoint>(() =>   IncreaseHealth(healAmount));
     }
 
     private void Update()

@@ -1,3 +1,5 @@
+using System;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Pathfinding;
 using UnityEngine;
@@ -5,30 +7,49 @@ using Zenject;
 
 namespace _Game.Scripts.Enemies
 {
-    public class GrandmaEnemy : Enemy, IDamageable
+    public class GrandmaEnemy : Enemy, IDamageable, IDisposable
     {
         [SerializeField] private EnemyVisualStateController view;
         [SerializeField] private Collider collider;
         [SerializeField] private RandomPathAI randomPathAI;
-        
+
         [Inject] private PlayerMovementController player;
         [Inject] private SignalBus signalBus;
+        
         private Pool _pool;
 
         public override void Initialize()
         {
             base.Initialize();
             view.Initialize();
+            WaitAndActivate().Forget();
         }
+
+        private async UniTask WaitAndActivate()
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(1));
+            randomPathAI.Activate();
+            await UniTask.Delay(TimeSpan.FromSeconds(5));
+            randomPathAI.Dispose();
+            Die();
+        } 
 
         public void TakeDamage(int damage, GameObject owner)
         {
             Destroy(owner);
-            view.IsPunked = true;
-            view.RefreshVisualState();
-            collider.enabled = false;
+            Die();
+        }
 
-            transform.DOMoveY(8, .4f).SetDelay(.4f);
+        private void Die()
+        {
+            randomPathAI.Cancel();
+            view.SetShocked();
+            view.RefreshVisualState();
+            collider.enabled = false; 
+            transform.DOMoveY(8, .2f).OnComplete(() =>
+            {
+                _pool.Despawn(this);
+            });
         }
 
         private void OnTriggerEnter(Collider other)
@@ -37,7 +58,6 @@ namespace _Game.Scripts.Enemies
 
             if (other.gameObject.CompareTag("Player"))
             {
-                Debug.Log("x");
                 signalBus.Fire<GameSignals.OnPlayerDamageTaken>();
                 collider.enabled = false;
                 Sequence sequence = DOTween.Sequence();
@@ -46,7 +66,8 @@ namespace _Game.Scripts.Enemies
                 sequence.OnComplete(() => { _pool.Despawn(this); });
             }
         }
-        
+
+
         public class Pool : MonoMemoryPool<GrandmaEnemy>
         {
             protected override void OnCreated(GrandmaEnemy item)
@@ -55,6 +76,13 @@ namespace _Game.Scripts.Enemies
                 item._pool = this;
                 base.OnCreated(item);
             }
+        }
+
+        public void Dispose()
+        {
+            view?.Dispose();
+            _pool?.Dispose();
+            randomPathAI.Dispose();
         }
     }
 }

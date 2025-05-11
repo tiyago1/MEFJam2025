@@ -20,7 +20,6 @@ namespace _Game.Scripts
             if (enemy is not null)  
             {
                 enemy.TakeDamage(1, this.gameObject);
-                signalBus.Fire<GameSignals.OnPlayerDamageTaken>();
             }
             else
             {

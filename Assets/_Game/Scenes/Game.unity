@@ -9531,10 +9531,10 @@ MonoBehaviour:
   maxSpawnCount: 0
   data:
   - Type: 2
-    Ratio: 30
+    Ratio: 40
     Prefab: {fileID: 4555812439737471334, guid: 2dfd86c85fa90c54da8d8dafda6beab7, type: 3}
   - Type: 0
-    Ratio: 70
+    Ratio: 60
     Prefab: {fileID: 6070887589155072367, guid: e28af3bc29176074d94b1e8711bb8838, type: 3}
   enemies: []
 --- !u!4 &1428950787

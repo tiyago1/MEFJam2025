@@ -103,21 +103,18 @@ namespace _Game.Scripts
             {
                 case EnemyType.Normal:
                     enemy = _normalPool.Spawn();
-                    enemy.transform.position = spawnPoint.transform.position;
-                    this.transform.gameObject.SetActive(true);
-
-                    enemy.Initialize();
-
                     break;
                 case EnemyType.Policeman:
                     break;
                 case EnemyType.Grandma:
                     enemy = _grandmaPool.Spawn();
-                    enemy.transform.position = spawnPoint.transform.position;
-
                     break;
             }
             
+            enemy.transform.position = spawnPoint.transform.position;
+            this.transform.gameObject.SetActive(true);
+            enemy.Initialize();
+
         }
 
         public void Dispose()

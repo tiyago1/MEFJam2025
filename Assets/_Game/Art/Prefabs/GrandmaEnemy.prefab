@@ -23,7 +23,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3985047335504939339
 Transform:
   m_ObjectHideFlags: 0
@@ -121,8 +121,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprites:
   - {fileID: 1969270650, guid: 39b758fc48c28224ca840d0426f01cc7, type: 3}
-  - {fileID: 994721372, guid: 39b758fc48c28224ca840d0426f01cc7, type: 3}
   - {fileID: 2000590194, guid: 39b758fc48c28224ca840d0426f01cc7, type: 3}
+  - {fileID: 2000590194, guid: 39b758fc48c28224ca840d0426f01cc7, type: 3}
+  - {fileID: 2000590194, guid: 39b758fc48c28224ca840d0426f01cc7, type: 3}
+  - {fileID: 994721372, guid: 39b758fc48c28224ca840d0426f01cc7, type: 3}
   view: {fileID: 437459646325839400}
   initialState: 0
   activeStateType: 0
@@ -132,11 +134,12 @@ MonoBehaviour:
   beforeLayer:
     serializedVersion: 2
     m_Bits: 768
-  collider: {fileID: 8856123388268120008}
+  collider: {fileID: 4049096571401110351}
   characterController: {fileID: 8856123388268120008}
   IsLeft: 0
   IsFront: 0
   IsPunked: 0
+  IsShocked: 0
 --- !u!135 &4049096571401110351
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -204,7 +207,7 @@ MonoBehaviour:
   version: 5
   radius: 0.5
   height: 2
-  canMove: 1
+  canMove: 0
   maxSpeed: 1
   gravity: {x: NaN, y: NaN, z: NaN}
   groundMask:
