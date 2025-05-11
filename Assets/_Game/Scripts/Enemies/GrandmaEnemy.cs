@@ -67,7 +67,6 @@ namespace _Game.Scripts.Enemies
             }
         }
 
-
         public class Pool : MonoMemoryPool<GrandmaEnemy>
         {
             protected override void OnCreated(GrandmaEnemy item)

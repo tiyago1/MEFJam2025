@@ -30,7 +30,12 @@ namespace _Game.Scripts.Enemies
             chaser.Stop();
             collider.enabled = false;
             signalBus.Fire<GameSignals.OnPlayerEarnPoint>();
-            transform.DOMoveY(8, .4f).SetDelay(.4f);
+            transform.DOMoveY(8, .4f).SetDelay(.4f)
+                .OnComplete(() =>
+                {
+                    _pool.Despawn(this);
+                }
+            );
         }
 
         private void OnTriggerEnter(Collider other)
@@ -39,7 +44,6 @@ namespace _Game.Scripts.Enemies
 
             if (other.gameObject.CompareTag("Player"))
             {
-                Debug.Log("x");
                 signalBus.Fire<GameSignals.OnPlayerDamageTaken>();
                 chaser.Stop();
                 collider.enabled = false;
@@ -49,6 +53,7 @@ namespace _Game.Scripts.Enemies
                 sequence.OnComplete(() => { _pool.Despawn(this); });
             }
         }
+
         public class Pool : MonoMemoryPool<NormalEnemy>
         {
             protected override void OnCreated(NormalEnemy item)
@@ -59,5 +64,4 @@ namespace _Game.Scripts.Enemies
             }
         }
     }
-   
 }

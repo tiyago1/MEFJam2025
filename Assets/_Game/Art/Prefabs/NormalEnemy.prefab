@@ -22,7 +22,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3985047335504939339
 Transform:
   m_ObjectHideFlags: 0
@@ -100,7 +100,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 0.36
   m_SlopeLimit: 45
   m_StepOffset: 0.58
   m_SkinWidth: 0.08
@@ -170,6 +170,7 @@ MonoBehaviour:
   IsLeft: 0
   IsFront: 0
   IsPunked: 0
+  IsShocked: 0
 --- !u!135 &4049096571401110351
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -189,7 +190,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Radius: 0.95
+  m_Radius: 0.64
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5101161283465533055
 GameObject:
@@ -264,14 +265,14 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1429816512, guid: c036ea921bef9924cbd8a819b19661d5, type: 3}
+  m_Sprite: {fileID: 869347492, guid: 399e0cea29ae5c342afe249ee0e7a010, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2.48, y: 7.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
