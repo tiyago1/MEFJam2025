@@ -37,7 +37,10 @@ namespace _Game.Scripts
             base.Initialize();
             float value = 6;
 
-            PreDeffance().Forget();
+            IsShocked = false;
+            IsPunked = false;
+            RefreshVisualState();
+            PreDeffance().Forget(); 
 
             _moveSequence = DOTween.Sequence();
             _moveSequence.Append(view.transform.DOLocalRotate(new Vector3(0, 0, -value), .3f));
@@ -117,6 +120,7 @@ namespace _Game.Scripts
             _moveSequence.Kill();
             IsShocked = false;
             IsPunked = false;
+            RefreshVisualState();
         }
 
         public void SetShocked()
