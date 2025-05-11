@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -19,20 +20,52 @@ namespace _Game.Scripts
         [SerializeField, ReadOnly] private EnemyVisualType activeStateType;
 
         [Inject] private PlayerMovementController playerMovementController;
+        [SerializeField] private LayerMask afterLayer;
+        [SerializeField] private LayerMask beforeLayer;
+        [SerializeField] private Collider collider;
+        [SerializeField] private Collider characterController;
 
         public bool IsLeft;
         public bool IsFront;
         public bool IsPunked;
+        private Sequence _moveSequence;
 
-        protected override void Awake()
+        public override void Initialize()
         {
-            base.Awake();
+            base.Initialize();
             float value = 6;
+
+     
+            PreDeffance().Forget();
+ 
+            _moveSequence = DOTween.Sequence();
+            _moveSequence.Append(view.transform.DOLocalRotate(new Vector3(0, 0, -value), .3f));
+            _moveSequence.Append(view.transform.DOLocalRotate(new Vector3(0, 0, value), .3f));
+            _moveSequence.Append(view.transform.DOLocalRotate(new Vector3(0, 0, -value), .3f));
+            _moveSequence.SetLoops(-1, LoopType.Yoyo);
+        }
+
+        private async UniTask PreDeffance()
+        {
+            characterController.excludeLayers = beforeLayer;
+            collider.enabled = false;
+            await UniTask.Delay(TimeSpan.FromSeconds(.2));
             Sequence sequence = DOTween.Sequence();
-            sequence.Append(view.transform.DOLocalRotate(new Vector3(0, 0, -value), .3f));
-            sequence.Append(view.transform.DOLocalRotate(new Vector3(0, 0, value), .3f));
-            sequence.Append(view.transform.DOLocalRotate(new Vector3(0, 0, -value), .3f));
-            sequence.SetLoops(-1, LoopType.Yoyo);
+            sequence.Append(view.DOFade(.5f, .2f));
+            sequence.Append(view.DOFade(1f, .2f)); 
+            sequence.SetLoops(2, LoopType.Yoyo).OnComplete(() =>
+            {
+                Debug.Log(this.gameObject.name);
+                characterController.excludeLayers = afterLayer;
+                collider.enabled = true;
+            });
+
+            // await sequence.AsyncWaitForCompletion();
+            // await UniTask.Delay(TimeSpan.FromSeconds(.01f), cancellationToken: cancellationTokenSource.Token);
+            
+            // view.DOFade(1f, .1f);
+            // this.GetComponent<CharacterController>().excludeLayers = afterLayer;
+            // this.GetComponent<Collider>().enabled = true;
         }
 
         [Button]
@@ -71,6 +104,12 @@ namespace _Game.Scripts
             {
                 SetVisualState(IsFront ? EnemyVisualType.NormalFront : EnemyVisualType.NormalBack);
             }
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _moveSequence.Kill();
         }
     }
 }

@@ -34,7 +34,7 @@ public class HealthBarManager : MonoBehaviour
     private void Awake()
     {
         // Ba�lang��ta can de�erlerini ayarla
-        currentHealth = 50f;
+        currentHealth = 100f;
 
         // UI elementlerini ayarla
         if (healthBar != null)
@@ -43,7 +43,7 @@ public class HealthBarManager : MonoBehaviour
             healthBar.value = currentHealth;
         }
 
-        UpdateHealthUI();
+        UpdateHealthUI(); 
     }
 
     private void Start()
@@ -99,7 +99,7 @@ public class HealthBarManager : MonoBehaviour
         // Can�n 0'�n alt�na d��mesini �nle
         if (currentHealth < 0)
         {
-            currentHealth = 0;
+            currentHealth = 0; 
         }
 
         UpdateHealthUI();

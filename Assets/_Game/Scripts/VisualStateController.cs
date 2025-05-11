@@ -1,21 +1,26 @@
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Game.Scripts
 {
     
-    public class VisualStateController : MonoBehaviour
+    public class VisualStateController : MonoBehaviour, IDisposable
     {
         [SerializeField] private List<Sprite> sprites;
         [SerializeField] public SpriteRenderer view;
         [SerializeField] private int initialState;
         
         [ReadOnly] private int activeState;
+        
+        protected CancellationTokenSource cancellationTokenSource;
 
-        protected virtual void Awake()
+        public virtual void Initialize()
         {
             SetVisualState(initialState);
+            cancellationTokenSource = new CancellationTokenSource();
         }
 
         [Button]
@@ -35,6 +40,11 @@ namespace _Game.Scripts
         public void Next()
         {
             SetVisualState(activeState + 1);
+        }
+
+        public virtual void Dispose()
+        {
+            cancellationTokenSource.Cancel();
         }
     }
 }

@@ -27,6 +27,7 @@ namespace _Game.Scripts
 
         void UpdatePath()
         {
+            
             if (seeker.IsDone() && target != null)
             {
                 seeker.StartPath(transform.position, target.position, OnPathComplete);
@@ -66,10 +67,10 @@ namespace _Game.Scripts
             }
         }
 
-        public void Chase(Transform target)
+        public void Chase(Transform target) 
         {
             this.target = target;
-            InvokeRepeating(nameof(UpdatePath), 0f, updateRate);
+            InvokeRepeating(nameof(UpdatePath), .1f, updateRate);
         }
 
         public void Stop()

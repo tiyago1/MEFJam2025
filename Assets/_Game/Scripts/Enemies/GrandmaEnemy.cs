@@ -1,25 +1,24 @@
 using DG.Tweening;
+using Pathfinding;
 using UnityEngine;
 using Zenject;
 
 namespace _Game.Scripts.Enemies
 {
-    public class NormalEnemy : Enemy, IDamageable
+    public class GrandmaEnemy : Enemy, IDamageable
     {
-        [SerializeField] private EnemyChase chaser;
         [SerializeField] private EnemyVisualStateController view;
         [SerializeField] private Collider collider;
-
+        [SerializeField] private RandomPathAI randomPathAI;
+        
         [Inject] private PlayerMovementController player;
         [Inject] private SignalBus signalBus;
-
-        public Pool _pool;
+        private Pool _pool;
 
         public override void Initialize()
         {
             base.Initialize();
             view.Initialize();
-            chaser.Chase(player.transform);
         }
 
         public void TakeDamage(int damage, GameObject owner)
@@ -27,7 +26,6 @@ namespace _Game.Scripts.Enemies
             Destroy(owner);
             view.IsPunked = true;
             view.RefreshVisualState();
-            chaser.Stop();
             collider.enabled = false;
 
             transform.DOMoveY(8, .4f).SetDelay(.4f);
@@ -41,7 +39,6 @@ namespace _Game.Scripts.Enemies
             {
                 Debug.Log("x");
                 signalBus.Fire<GameSignals.OnPlayerDamageTaken>();
-                chaser.Stop();
                 collider.enabled = false;
                 Sequence sequence = DOTween.Sequence();
                 sequence.Append(view.view.DOColor(Color.red, .5f));
@@ -49,9 +46,10 @@ namespace _Game.Scripts.Enemies
                 sequence.OnComplete(() => { _pool.Despawn(this); });
             }
         }
-        public class Pool : MonoMemoryPool<NormalEnemy>
+        
+        public class Pool : MonoMemoryPool<GrandmaEnemy>
         {
-            protected override void OnCreated(NormalEnemy item)
+            protected override void OnCreated(GrandmaEnemy item)
             {
                 item.gameObject.name += $"_{NumTotal}";
                 item._pool = this;
@@ -59,5 +57,4 @@ namespace _Game.Scripts.Enemies
             }
         }
     }
-   
 }
