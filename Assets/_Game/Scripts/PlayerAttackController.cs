@@ -21,6 +21,7 @@ namespace _Game.Scripts
         [SerializeField] private List<Transform> bulletObjects;
 
         [Inject] private DiContainer _container;
+        [Inject] private SoundEffect _soundEffect;
 
         private bool _isReloading;
 
@@ -100,6 +101,7 @@ namespace _Game.Scripts
                 var bullet = _container.InstantiatePrefabForComponent<Bullet>(bulletPrefab, this.transform.position,
                     this.transform.rotation, null);
                 bullet.Force(direction, hit.point);
+                _soundEffect.PlaySound(SFXEffectType.Hit);
             }
 
             DisableAttackState().Forget();
