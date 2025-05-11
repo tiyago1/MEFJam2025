@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Sirenix.OdinInspector;
@@ -34,6 +35,9 @@ namespace _Game.Scripts
 
         public override void Initialize()
         {
+
+            cancellationTokenSource?.Cancel();
+            cancellationTokenSource = new CancellationTokenSource();
             base.Initialize();
             float value = 6;
 

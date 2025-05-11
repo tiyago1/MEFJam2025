@@ -18,6 +18,8 @@ namespace _Game.Scripts.Enemies
         public override void Initialize()
         {
             base.Initialize();
+            collider.enabled = true;
+
             view.Initialize();
             chaser.Chase(player.transform);
         }
